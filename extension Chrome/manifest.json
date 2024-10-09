@@ -10,7 +10,13 @@
     "tabs",
     "webNavigation",
     "storage",
+<<<<<<< HEAD
     "notifications"
+=======
+    "notifications",
+    "webRequest",
+    "webRequestBlocking"
+>>>>>>> 137f3d1 (Se sube una version actualizada de mi codigo)
   ],
   "host_permissions": [
     "<all_urls>"

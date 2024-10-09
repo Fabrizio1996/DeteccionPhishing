@@ -1,7 +1,47 @@
+<<<<<<< HEAD
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete' && tab.url) {
         console.log(`Analizando URL: ${tab.url}`);
 
+=======
+// Función para redirigir a la página bloqueada
+function redirigirPaginaBloqueada(tabId) {
+    chrome.tabs.update(tabId, { url: chrome.runtime.getURL("blocked.html") });
+}
+
+// Función para verificar si una URL está en la lista de URLs bloqueadas
+function verificarURLBloqueada(url, tabId) {
+    fetch('http://localhost:5000/urls-bloqueadas')  // Endpoint para obtener las URLs bloqueadas
+        .then(response => response.json())
+        .then(data => {
+            const urlsBloqueadas = data.urls_bloqueadas;
+            // Si la URL está en la lista de URLs bloqueadas, redirige a la página bloqueada
+            if (urlsBloqueadas.some(bloqueada => url.includes(bloqueada))) {
+                redirigirPaginaBloqueada(tabId);
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener las URLs bloqueadas:', error);
+        });
+}
+
+// Listener que se activa cuando una pestaña se actualiza
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // Evitar el bucle verificando si la URL es ya la de 'blocked.html'
+    const blockedUrl = chrome.runtime.getURL("blocked.html");
+
+        // Filtrar URLs con esquemas 'chrome://' o 'chrome-extension://'
+        const urlEsquema = new URL(tab.url).protocol;
+        if (urlEsquema === 'chrome:' || urlEsquema === 'chrome-extension:') {
+            // Ignorar URLs internas de Chrome
+            return;
+        }
+
+    if (changeInfo.status === 'complete' && tab.url && tab.url !== blockedUrl) {
+        console.log(`Analizando URL: ${tab.url}`);
+
+        // Realiza la petición para analizar la URL
+>>>>>>> 137f3d1 (Se sube una version actualizada de mi codigo)
         fetch(`http://localhost:5000/analizar-url?url=${tab.url}`)
             .then(response => response.json())
             .then(data => {
@@ -13,9 +53,21 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                         type: 'basic',
                         iconUrl: 'icons/icon48.png',
                         title: '⚠️ ¡Advertencia de Phishing!',
+<<<<<<< HEAD
                         message: 'Este sitio puede ser de phishing y no es seguro. Te recomendamos que lo abandones.',
                         priority: 2
                     });
+=======
+                        message: 'Este sitio puede ser de phishing y no es seguro. Por tu seguridad lo bloqueamos.',
+                        priority: 2
+                    });
+
+                    // Bloquear la página redirigiendo a blocked.html
+                    redirigirPaginaBloqueada(tabId);
+                } else {
+                    // Verificar si la URL ya está bloqueada en la base de datos
+                    verificarURLBloqueada(tab.url, tabId);
+>>>>>>> 137f3d1 (Se sube una version actualizada de mi codigo)
                 }
             })
             .catch(error => {
@@ -23,6 +75,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             });
     }
 });
+<<<<<<< HEAD
 
 
 
@@ -30,3 +83,5 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 
 
+=======
+>>>>>>> 137f3d1 (Se sube una version actualizada de mi codigo)
