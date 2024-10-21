@@ -5,7 +5,7 @@ from phishing_detection import analizar_url
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Función para registrar eventos en la base de datos
 def registrar_evento(url, resultado, fecha_evento):

@@ -10,10 +10,12 @@
     "tabs",
     "webNavigation",
     "storage",
-    "notifications"
+    "notifications",
+    "activeTab"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "<all_urls>",
+     "*://*/*"
   ],
   "icons": {
     "16": "icons/icon16.png",

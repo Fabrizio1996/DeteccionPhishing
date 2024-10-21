@@ -41,13 +41,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             .then(data => {
                 console.log(`Resultado del análisis: ${data.resultado}`);
                 
-                if (data.resultado === 'Alerta') {
+                if (data.resultado === 'phishing') {
                     // Mostrar una notificación si la página es peligrosa
                     chrome.notifications.create({
                         type: 'basic',
                         iconUrl: 'icons/icon48.png',
                         title: '⚠️ ¡Advertencia de Phishing!',
-                        message: 'Este sitio puede ser de phishing y no es seguro. Te recomendamos que lo abandones.',
+                        message: 'Este sitio puede ser de phishing y no es seguro. Lo bloqueamos por tu seguridad.',
                         priority: 2
                     });
 
